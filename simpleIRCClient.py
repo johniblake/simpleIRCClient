@@ -60,21 +60,13 @@ class SimpleIRCClient:
         self.socket.send(message.encode('UTF-8'))
 
     def _display_user_msg(self, username, msg):
-        if list(username)[0] == 'j':
-            sys.stdout.write('\033[38;5;82m' + username + ': \033[0m')
-        elif list(username)[0] == 'g':
-            sys.stdout.write('\033[38;5;214m' + username + ': \033[0m')
-        else:
-            sys.stdout.write('\033[38;5;256m' + username + ': \033[0m')
+        ansi_color = str(ord(list(username)[0])%52 + 16)
+        sys.stdout.write('\033[38;5;'+ansi_color+'m' + username + ': \033[0m')
         print msg
 
     def _display_own_msg(self, username, msg):
-        if list(username)[0] == 'j':
-            sys.stdout.write('\033[F\033[38;5;82m' + username + ': \033[0m')
-        elif list(username)[0] == 'g':
-            sys.stdout.write('\033[F\033[38;5;214m' + username + ': \033[0m')
-        else:
-            sys.stdout.write('\033[F\033[38;5;256m' + username + ': \033[0m')
+        ansi_color = str(ord(list(username)[0])%88 + 52)
+        sys.stdout.write('\033[F\033[38;5;'+ansi_color+'m' + username + ': \033[0m')
         print msg
 
     def startup_and_listen(self, parent_conn, child_conn):
@@ -100,13 +92,17 @@ class SimpleIRCClient:
         server_input = parent_conn.recv()
         self._issue_(server_input, parent_conn, child_conn)
 
-
+    def _close_child(self, child_conn):
+        parent_conn.close()
+        SystemExit(0)
 
     def _parse_msg_update_client(self, parent_conn , child_conn):
         message = child_conn.recv()
         if message[0] == 2:
-            parent_conn.close()
-            child_conn.close()
+            temp = parent_conn.recv()
+            print temp
+            parent_conn.close
+            self._close_child(child_conn)
             SystemExit(0)
         elif message[0] == 1:
             server_message = message[1]
@@ -190,9 +186,11 @@ class SimpleIRCClient:
 if __name__ == '__main__':
     # Process command line args (server, port, message)
     #super unsafe, but I'm not implementing a protected login server
-    username_auth = {'john_blake_':'91ud4nk0ab2jcdeptdhx2x02yuywa3', 'goodgoodlovin':'h1dch0jgcbu9ti3xa05y7mfsjihrvq'}
+    username_auth = {'john_blake_':'91ud4nk0ab2jcdeptdhx2x02yuywa3', 'goodgoodlovin':'h1dch0jgcbu9ti3xa05y7mfsjihrvq', 'networks_longbottom':'8ux0acgoljcajpn178phg93o18dk9r'}
 
+    print("Welcome to Simple IRC! Sign in to your twitch.tv account.")
     user_name = raw_input("username: ")
+    #user_name = "john_blake_"
     oauth_token = None
     channel = '#'+user_name
 
