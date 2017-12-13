@@ -1,7 +1,7 @@
 '''
-A simple "echo" client written in Python.
+A simple Twitch IRC client written in Python.
 
-author:  Amy Csizmar Dalal and [YOUR NAMES HERE]
+author:  Amy Csizmar Dalal and John Blake
 CS 331, Fall 2015
 date:  21 September 2015
 '''
@@ -186,7 +186,7 @@ class SimpleIRCClient:
 if __name__ == '__main__':
     # Process command line args (server, port, message)
     #super unsafe, but I'm not implementing a protected login server
-    username_auth = {'john_blake_':'91ud4nk0ab2jcdeptdhx2x02yuywa3', 'goodgoodlovin':'h1dch0jgcbu9ti3xa05y7mfsjihrvq', 'networks_longbottom':'8ux0acgoljcajpn178phg93o18dk9r'}
+    username_auth = {'john_blake_':'91ud4nk0ab2jcdeptdhx2x02yuywa3', 'networks_longbottom':'8ux0acgoljcajpn178phg93o18dk9r'}
 
     print("Welcome to Simple IRC! Sign in to your twitch.tv account.")
     user_name = raw_input("username: ")
